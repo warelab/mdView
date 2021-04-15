@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import ReactMarkdown from 'react-markdown'
+import React, { Component } from 'react'
 import remarkGfm from 'remark-gfm'
-import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
+import { Remark } from 'react-remark'
+import { Container, Row, Col, Navbar, Nav, Table } from 'react-bootstrap'
 
 export default class extends Component {
   constructor(props) {
@@ -49,9 +49,14 @@ export default class extends Component {
     const c = this.state.currentFile;
     const f = this.state.files[c];
     return <div>
-      { f.content && <ReactMarkdown
-        plugins={[remarkGfm]}
-        children={f.content} />
+      { f.content && <Remark
+        remarkPlugins={[remarkGfm]}
+        rehypeReactOptions={{
+          components: {
+            table: props => <Table striped bordered hover {...props} />
+          }
+        }}
+      >{f.content}</Remark>
       }
     </div>
   }

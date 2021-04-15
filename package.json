@@ -1,7 +1,7 @@
 {
-  "name": "mdView",
+  "name": "gramene-mdview",
   "version": "1.0.0",
-  "description": "mdView React component",
+  "description": "mdview React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -23,6 +23,7 @@
     "bootstrap": "^4.6.0",
     "react-bootstrap": "^1.5.2",
     "react-markdown": "^5.0.3",
+    "react-remark": "^2.0.3",
     "rehype-katex": "^4.0.0",
     "remark-gfm": "^1.0.0",
     "remark-math": "^4.0.0"
