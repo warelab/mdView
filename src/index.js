@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
 
 export default class extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export default class extends Component {
       .then(response => response.json())
       .then(data => {
         const mdFiles = data.filter(f => md_regex.test(f.name)).reverse();
+        mdFiles.forEach(f => f.name = f.name.replace(/\.[^/.]+$/, ""));
         this.setState({files: mdFiles});
         mdFiles.forEach(f => {
           fetch(f.download_url)
@@ -26,21 +29,38 @@ export default class extends Component {
         })
       });
   }
-
+  renderFileList() {
+    if (! this.state.files) {
+      return <p>loading</p>
+    }
+    const c = this.state.currentFile;
+    const handleSelect = (eventKey) => this.setState({currentFile:eventKey});
+    return <Navbar bg="light">
+      <Nav className="flex-column" activeKey={c} onSelect={handleSelect}>
+        <Nav.Item><h5>{this.props.heading || 'Files'}</h5></Nav.Item>
+        { this.state.files.map((f,i) => <Nav.Link key={i} eventKey={i}>{f.name}</Nav.Link>) }
+      </Nav>
+    </Navbar>
+  }
   renderFile() {
+    if (! this.state.files) {
+      return <p>loading</p>
+    }
     const c = this.state.currentFile;
     const f = this.state.files[c];
-    const n = this.state.files.length;
     return <div>
-      {c > 0 && <a onClick={() => {this.setState({currentFile: c-1})}}>next</a>}
-      {c < n-1 && <a onClick={() => {this.setState({currentFile: c+1})}}>prev</a>}
-      <h4>{f.name}</h4>
-      { f.content && <ReactMarkdown>{f.content}</ReactMarkdown> }
+      { f.content && <ReactMarkdown
+        plugins={[remarkGfm]}
+        children={f.content} />
+      }
     </div>
   }
   render() {
-    return <div>
-      { this.state.files ? this.renderFile() : <p>loading...</p> }
-    </div>
+    return <Container>
+      <Row>
+        <Col sm={3}>{ this.renderFileList()}</Col>
+        <Col sm={9}>{ this.renderFile() }</Col>
+      </Row>
+    </Container>
   }
 }

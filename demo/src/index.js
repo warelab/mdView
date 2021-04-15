@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Example from '../../src'
 
 class Demo extends Component {
@@ -10,7 +10,8 @@ class Demo extends Component {
       <Example
         org='warelab'
         repo='release-notes'
-        path='sorghum'
+        path='maize'
+        heading='Releases'
       />
     </div>
   }
