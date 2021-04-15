@@ -53,7 +53,7 @@ export default class extends Component {
         remarkPlugins={[remarkGfm]}
         rehypeReactOptions={{
           components: {
-            table: props => <Table striped bordered hover {...props} />
+            table: props => <Table size="sm" striped bordered hover {...props} />
           }
         }}
       >{f.content}</Remark>
